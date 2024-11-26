@@ -1,14 +1,134 @@
 # Image_Deraining_For_Autonomous_Driving
-DIP Final Project :
 
+### **Overview**
 
-Autonomous driving technology relies heavily on clear and accurate visual data to make split-second decisions. In adverse weather conditions, such as snowy or foggy environments, the visibility of road markings, obstacles, and other key features is significantly reduced, creating challenges for both perception and decision-making systems. Snow, in particular, is a complex atmospheric condition that not only obstructs the field of view with falling snow particles and streaks but also covers road surfaces, markings, and objects in a way that conventional image processing algorithms struggle to handle. Additionally, the veiling effect caused by snow’s reflective properties further reduces image contrast and obscures crucial visual information.
+This project tackles the critical issue of reduced visibility in adverse weather conditions, focusing on **image deraining** for autonomous driving. Rain obstructs the visibility of road features, leading to potential safety hazards for perception and decision-making systems in autonomous vehicles. This project employs **non-learning-based techniques** to enhance visibility in real-time without relying on extensive training datasets, ensuring adaptability and efficiency in diverse and challenging rain scenarios.
 
+---
 
-Traditionally, deep learning approaches have been employed to remove such obstructions, with various machine learning models trained to recognize and remove snow artifacts from images. However, learning-based methods require extensive, diverse, and often highly specific datasets to be effective. This dependence on training data poses several challenges:
+## **Problem Statement**
 
+Autonomous driving systems depend heavily on clear and accurate visual data. Rain introduces challenges that include:
 
-Data Collection and Diversity: Building a comprehensive dataset that captures all types of snow patterns, intensities, and scenarios encountered on the road is impractical. Real-world snow scenes vary greatly depending on geographical location, season, time of day, and even the unique microclimates around certain regions.
-Real-Time Performance: Deep learning models tend to be computationally heavy and may not meet the real-time constraints of autonomous driving hardware. Processing speed is critical to maintaining safe navigation in rapidly changing driving environments, and the latency introduced by complex learning models can be a safety concern.
-Adaptability: A learning-based approach trained on one dataset may not generalize well to new or unseen snow conditions, limiting its reliability in real-world deployment.
-Given these challenges, our project proposes a non-learning-based desnowing system for autonomous driving. This approach focuses on leveraging classical image processing techniques, frequency domain transformations, and multi-spectral data to identify and remove snow obstructions from images in real time. By avoiding dependency on large training datasets, we ensure that the system remains adaptable to a wide range of snow conditions, regardless of where or when they occur. Additionally, the non-learning nature of our system offers faster and more efficient processing, enabling it to meet the low-latency demands of autonomous driving hardware.
+- **Visibility Obstruction**: Rain streaks, water droplets, and splashes distort the camera view, obscuring road markings and obstacles.
+- **Dynamic Weather Conditions**: Variations in rain intensity, angles, and environments make it difficult to generalize solutions.
+- **Latency Requirements**: Autonomous systems require low-latency processing to make split-second decisions. Many learning-based approaches fail to meet these real-time demands.
+
+### Why Non-Learning-Based Approaches?
+
+Deep learning models have been widely used for image enhancement, but they face limitations:
+1. **Dependence on Large Training Datasets**:
+   - Collecting diverse datasets for all possible rain scenarios is impractical.
+   - Generalization to unseen rain conditions remains a challenge.
+2. **High Computational Overhead**:
+   - Learning-based models are computationally intensive, leading to increased latency.
+   - Real-time applications, such as autonomous driving, demand faster processing.
+3. **Adaptability**:
+   - Non-learning-based approaches offer adaptability without retraining, making them suitable for diverse and dynamic environments.
+
+---
+
+## **Project Objectives**
+
+This project proposes a **non-learning-based deraining system** using classical image processing techniques and frequency-domain transformations to:
+1. **Improve Visibility**: Remove rain streaks and enhance image clarity for autonomous driving perception systems.
+2. **Ensure Real-Time Performance**: Provide low-latency processing suitable for real-world applications.
+3. **Enhance Generalization**: Adapt to diverse and unseen rain conditions without the need for training datasets.
+
+---
+
+## **Methodology**
+
+### 1. **Classical Image Processing**
+- Rain streaks and obstructions are identified and removed using:
+  - Edge detection
+  - Frequency filtering
+  - Contrast enhancement
+
+### 2. **Frequency-Domain Transformations**
+- Transforming images into the frequency domain allows precise separation of rain artifacts from useful image features.
+
+### 3. **Pipeline Structure**
+- The processing pipeline includes:
+  - **Rain Detection**: Identifies rain streaks using edge-enhanced filtering techniques.
+  - **Artifact Removal**: Applies frequency-based methods to selectively remove rain artifacts.
+  - **Image Restoration**: Enhances contrast and restores image clarity while preserving essential details.
+
+---
+
+## **Project Features**
+
+1. **Python Implementation**:
+   - All algorithms are implemented in Python for simplicity and flexibility.
+2. **Real-Time Focus**:
+   - Designed to meet the low-latency demands of autonomous driving systems.
+3. **No Dependency on Training Datasets**:
+   - Completely independent of deep learning models or pre-trained networks.
+
+---
+
+## **Repository Structure**
+
+```plaintext
+Image_Deraining_For_Autonomous_Driving/
+├── data/                    # Example input images
+├── filters.py               # Core filter implementations
+├── deraining_filter.py      # Comprehensive deraining pipeline
+├── utils.py                 # Utility functions
+├── main.py                  # Main script for processing
+├── README.md                # Repository guide
+├── clear_recovered.jpg      # Output image: clear recovery example
+├── edge_enhanced.jpg        # Output image: edge-enhanced example
+├── recovered.jpg            # Output image: rain removal
+└── test2.png                # Sample input image
+```
+
+---
+
+## **How to Use**
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/bob020416/Image_Deraining_For_Autonomous_Driving.git
+   ```
+
+2. Navigate to the project directory:
+   ```bash
+   cd Image_Deraining_For_Autonomous_Driving
+   ```
+
+3. Install required dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Run the main script with a test image:
+   ```bash
+   python main.py --input data/test_image.jpg --output results/derained_image.jpg
+   ```
+
+---
+
+## **Results**
+
+### Example Output
+1. **Input Image with Rain**:
+   ![Rainy Image](man-driving-rain.jpg)
+
+2. **Edge-Enhanced Image**:
+   ![Edge Enhanced](edge_enhanced.jpg)
+
+3. **Recovered Image (Rain Removed)**:
+   ![Recovered](recovered.jpg)
+
+---
+
+## **Future Enhancements**
+
+- Extend the pipeline to handle other adverse weather conditions like snow and fog.
+- Optimize the algorithms for deployment on edge devices used in autonomous vehicles.
+- Explore hybrid approaches combining classical and lightweight learning-based techniques for enhanced performance.
+
+---
+
+### **Let’s Drive Clearer with Advanced Image Processing!**

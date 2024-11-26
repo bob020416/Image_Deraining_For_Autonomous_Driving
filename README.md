@@ -129,6 +129,3 @@ Image_Deraining_For_Autonomous_Driving/
 - Optimize the algorithms for deployment on edge devices used in autonomous vehicles.
 - Explore hybrid approaches combining classical and lightweight learning-based techniques for enhanced performance.
 
----
-
-### **Let’s Drive Clearer with Advanced Image Processing!**

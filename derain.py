@@ -70,7 +70,7 @@ def hf_analysis(Il, Ih, I, opt):
     
     # Guided filtering
     Ih_new = guided_filter(Il_edge, Ih.astype(np.uint8), radius=8, eps=0.01)
-    Ir = Ih_new.astype(np.float32) + Il_edge.astype(np.float32)
+    Ir = Ih_new.astype(np.float32) + Il.astype(np.float32)
     Ir = np.clip(Ir, 0, 255).astype(np.uint8)
     cv2.imwrite('output/recovered.jpg', Ir)
     

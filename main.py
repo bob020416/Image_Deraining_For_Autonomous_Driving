@@ -49,7 +49,7 @@ def main():
     # final = np.vstack([img, steps[-1]])
     # cv2.imwrite("output/final.jpg", final)
 
-    final_combine = derain_filter(steps[-1], opt=1, iterations=1)
+    final_combine = derain_filter(steps[-1], opt=1, iterations=2)
     cv2.imwrite(args.output, final_combine)
 
 

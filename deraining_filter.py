@@ -211,7 +211,7 @@ def guided_filter(guide, src, radius=8, eps=0.01):
     # Apply guided filter to each channel
     for c in range(src.shape[2]):
         q[:,:,c] = cv2.ximgproc.guidedFilter(
-            guide=guide[:,:,0].astype(np.uint8),
+            guide=guide[:,:,c].astype(np.uint8),
             src=src[:,:,c].astype(np.uint8),
             radius=radius,
             eps=eps
@@ -221,7 +221,7 @@ def guided_filter(guide, src, radius=8, eps=0.01):
 
 if __name__ == "__main__":
     # Read the input image
-    input_path = 'test.jpg'  # Replace with your input image path
+    input_path = 'data/man-driving-rain.jpg'  # Replace with your input image path
     I = cv2.imread(input_path)
     
     # Ensure the image is read correctly

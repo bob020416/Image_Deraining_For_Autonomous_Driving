@@ -109,7 +109,7 @@ def sector_region(rows, cols, a, threshold, lratio=0.2, uratio=0.8):
             x = j - ccol
             if x > -clb and x < clb:
                 continue
-            if np.rad2deg(abs(np.atan2(y, x) - np.deg2rad(a))) < threshold:
+            if np.rad2deg(abs(np.arctan2(y, x) - np.deg2rad(a))) < threshold:
                 mask[i, j] = 1
                 mask[rows - i, cols - j] = 1
     return mask

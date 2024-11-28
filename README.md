@@ -1,12 +1,12 @@
-# Image Deraining For Autonomous_Driving
+# Image Deraining for Autonomous Driving
 
-### **Overview**
+### Overview
 
 This project tackles the critical issue of reduced visibility in adverse weather conditions, focusing on **image deraining** for autonomous driving. Rain obstructs the visibility of road features, leading to potential safety hazards for perception and decision-making systems in autonomous vehicles. This project employs **non-learning-based techniques** to enhance visibility in real-time without relying on extensive training datasets, ensuring adaptability and efficiency in diverse and challenging rain scenarios.
 
 ---
 
-## **Problem Statement**
+## Problem Statement
 
 Autonomous driving systems depend heavily on clear and accurate visual data. Rain introduces challenges that include:
 
@@ -28,7 +28,7 @@ Deep learning models have been widely used for image enhancement, but they face 
 
 ---
 
-## **Project Objectives**
+## Project Objectives
 
 This project proposes a **non-learning-based deraining system** using classical image processing techniques and frequency-domain transformations to:
 1. **Improve Visibility**: Remove rain streaks and enhance image clarity for autonomous driving perception systems.
@@ -37,7 +37,7 @@ This project proposes a **non-learning-based deraining system** using classical 
 
 ---
 
-## **Methodology**
+## Methodology
 
 ### 1. **Classical Image Processing**
 - Rain streaks and obstructions are identified and removed using:
@@ -56,7 +56,7 @@ This project proposes a **non-learning-based deraining system** using classical 
 
 ---
 
-## **Project Features**
+## Project Features
 
 1. **Python Implementation**:
    - All algorithms are implemented in Python for simplicity and flexibility.
@@ -67,25 +67,25 @@ This project proposes a **non-learning-based deraining system** using classical 
 
 ---
 
-## **Repository Structure**
+## Repository Structure
 
 ```plaintext
-Image_Deraining_For_Autonomous_Driving/
+.
 ├── data/                    # Example input images
+├── derain_filter.py         # Comprehensive deraining pipeline
 ├── filters.py               # Core filter implementations
-├── deraining_filter.py      # Comprehensive deraining pipeline
-├── utils.py                 # Utility functions
 ├── main.py                  # Main script for processing
-├── README.md                # Repository guide
-├── clear_recovered.jpg      # Output image: clear recovery example
-├── edge_enhanced.jpg        # Output image: edge-enhanced example
-├── recovered.jpg            # Output image: rain removal
-└── test2.png                # Sample input image
+├── output/                  # Intermediate output images
+├── README.md                # Project overview and instructions
+├── requirements.txt         # Required libraries
+├── results/                 # Example output images
+├── sols.py                  # Solution functions
+└── utils.py                 # Utility functions
 ```
 
 ---
 
-## **How to Use**
+## How to Use
 
 1. Clone the repository:
    ```bash
@@ -109,21 +109,18 @@ Image_Deraining_For_Autonomous_Driving/
 
 ---
 
-## **Results**
+## Results
 
 ### Example Output
 1. **Input Image with Rain**:
-   ![Rainy Image](man-driving-rain.jpg)
+   ![Rainy Image](./data/man-driving-rain.jpg)
 
-2. **Edge-Enhanced Image**:
-   ![Edge Enhanced](edge_enhanced.jpg)
-
-3. **Recovered Image (Rain Removed)**:
-   ![Recovered](recovered.jpg)
+2. **Recovered Image (Rain Removed)**:
+   ![Recovered](./results/man-driving-rain.jpg)
 
 ---
 
-## **Future Enhancements**
+## Future Enhancements
 
 - Extend the pipeline to handle other adverse weather conditions like snow and fog.
 - Optimize the algorithms for deployment on edge devices used in autonomous vehicles.

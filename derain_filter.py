@@ -17,9 +17,6 @@ def derain_filter(I, opt, iterations=1):
         # Low-frequency analysis
         tqdm.write(f"[{i+1}-1] Performing low-frequency analysis...")
         Il = lf_analysis(I_input)
-        # Apply guided filter to low-frequency component
-        tqdm.write(f"[{i+1}-2] Applying guided filter to low-frequency component...")
-        Il = guided_filter(Il, Il, radius=8, eps=0.01)
         # High-frequency component
         tqdm.write(f"[{i+1}-3] Computing high-frequency component...")
         Ih = I_input - Il.astype(np.float32)

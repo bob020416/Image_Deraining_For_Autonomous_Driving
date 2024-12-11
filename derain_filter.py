@@ -88,7 +88,7 @@ def hf_analysis(Il, Ih, I, opt):
     Iref = np.clip(Iref, 0, 255).astype(np.uint8)
 
     # Guided filtering
-    Irr = guided_filter(Icr, Iref, radius=8, eps=0.01)
+    Irr = guided_filter(Iref, Icr, radius=8, eps=0.01)
     Ih_final = np.clip(Irr, 0, 255).astype(np.uint8)
 
     return Ih_final

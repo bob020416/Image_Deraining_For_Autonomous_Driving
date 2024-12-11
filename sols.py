@@ -1,5 +1,5 @@
 from filters import *
-from utils import freq_domain
+from utils import find_slope
 
 
 def sol1():
@@ -35,29 +35,3 @@ def sol4():
         lambda I: gaussian_sharpen(I, ksize=(3, 3), sigma=20, alpha=2, beta=-1),
         lambda I: gaussian_sharpen(I, ksize=(3, 3), sigma=20, alpha=2, beta=-1),
     ]
-
-
-def find_slope(I):
-    I_freq = freq_domain(I) / 255
-
-    def score(a):
-        # print(a)
-        score = 0
-        region = sector_region(*I.shape, a, 2)
-        score = np.sum(I_freq[region == 1])
-        return score
-
-    (
-        max_a,
-        max_score,
-    ) = (
-        -1,
-        -1,
-    )
-    for a in [*np.linspace(-15, -2, 10), *np.linspace(2, 15, 10)]:
-        s = score(a)
-        print(a, s)
-        if s > max_score:
-            max_a, max_score = a, s
-    print(max_a, max_score)
-    return max_a, max_score

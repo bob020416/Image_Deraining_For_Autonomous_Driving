@@ -15,19 +15,19 @@ def derain_filter(I, opt, iterations=1):
     I_input = I.copy().astype(np.float32)
     for i in trange(iterations):
         # Low-frequency analysis
-        tqdm.write(f"[{i+1}-1] Performing low-frequency analysis...")
+        tqdm.write(f"[{i+1}-1] Computing low-frequency component...")
         Il = lf_analysis(I_input)
         # High-frequency component
-        tqdm.write(f"[{i+1}-3] Computing high-frequency component...")
+        tqdm.write(f"[{i+1}-2] Computing high-frequency component...")
         Ih = I_input - Il.astype(np.float32)
         # High-frequency analysis
-        tqdm.write(f"[{i+1}-4] Performing high-frequency analysis...")
-        Ih_final = hf_analysis(Il, Ih, I, opt)
+        tqdm.write(f"[{i+1}-3] Performing high-frequency analysis...")
+        I_final = hf_analysis(Il, Ih, I, opt)
         # Update input for next iteration
-        tqdm.write(f"[{i+1}-5] Updating input for next iteration...")
-        I_input = Ih_final.astype(np.float32)
+        tqdm.write(f"[{i+1}-4] Updating input for next iteration...")
+        I_input = I_final.astype(np.float32)
 
-    return Ih_final
+    return I_final
 
 
 def lf_analysis(I):
@@ -89,9 +89,9 @@ def hf_analysis(Il, Ih, I, opt):
 
     # Guided filtering
     Irr = guided_filter(Iref, Icr, radius=8, eps=0.01)
-    Ih_final = np.clip(Irr, 0, 255).astype(np.uint8)
+    I_final = np.clip(Irr, 0, 255).astype(np.uint8)
 
-    return Ih_final
+    return I_final
 
 
 def detect_rain_snow(I):

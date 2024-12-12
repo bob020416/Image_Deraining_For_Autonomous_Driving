@@ -1,4 +1,5 @@
 import numpy as np
+from filters import sector_region
 
 
 def freq_domain(I):
@@ -22,3 +23,23 @@ def chain(I, ops):
         I = op(I).astype(np.uint8)
         steps.append(I)
     return steps
+
+
+def find_slope(I):
+    I_freq = freq_domain(I) / 255
+
+    def score(a):
+        # print(a)
+        score = 0
+        region = sector_region(*I.shape, a, 2)
+        score = np.sum(I_freq[region == 1])
+        return score
+
+    max_a, max_score = -1, -1
+    for a in [*np.linspace(-10, -2, 8), *np.linspace(2, 10, 8)]:
+        s = score(a)
+        print(a, s)
+        if s > max_score:
+            max_a, max_score = a, s
+    print(max_a, max_score)
+    return max_a, max_score

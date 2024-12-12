@@ -34,7 +34,7 @@ def derain_filter(I, opt, iterations=5, verbose=False):
             print(f"[{i+1}-5] Updating input for next iteration...")
         I_input = Ih_final.astype(np.float32)
 
-    return Ih_final
+    return I_final
 
 
 def lf_analysis(I):
@@ -98,10 +98,10 @@ def hf_analysis(Il, Ih, I, opt, verbose=False):
     Iref = np.clip(Iref, 0, 255).astype(np.uint8)
 
     # Guided filtering
-    Irr = guided_filter(Icr, Iref, radius=8, eps=0.01)
-    Ih_final = np.clip(Irr, 0, 255).astype(np.uint8)
+    Irr = guided_filter(Iref, Icr, radius=8, eps=0.01)
+    I_final = np.clip(Irr, 0, 255).astype(np.uint8)
 
-    return Ih_final
+    return I_final
 
 
 def detect_rain_snow(I):

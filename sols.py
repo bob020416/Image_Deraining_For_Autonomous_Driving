@@ -1,5 +1,5 @@
 from filters import *
-from utils import freq_domain
+from utils import find_slope
 
 
 def sol1():

@@ -59,6 +59,7 @@ def run(input_path, output_path):
     # cv2.imwrite("output/stage-2.jpg", final_combine)
     final_combine = numpy.uint8(final_combine)
     cv2.imwrite(output_path, final_combine)
+    print(f"Saved output to {output_path}")
 
 
 def main():
@@ -76,7 +77,7 @@ def main():
     with Pool(4) as p:
         for dir_path, dir_name, file_names in os.walk(args.input):
             # print(f"Processing images in {dir_path}")
-            output_dir = args.input.replace("data", "results")
+            output_dir = dir_path.replace("data", "results")
             os.makedirs(output_dir, exist_ok=True)
             for file_name in file_names:
                 output_file = os.path.join(output_dir, file_name)
@@ -84,9 +85,9 @@ def main():
                 if not file_name.endswith(".jpg"):
                     print(f"Skipping {file_path}")
                     continue
-                print(f"Processing {file_path}")
+                # print(f"Processing {file_path}")
                 p.apply_async(run, args=(file_path, output_file))
-
+        print("Waiting for all processes to finish")
         p.close()
         p.join()
 

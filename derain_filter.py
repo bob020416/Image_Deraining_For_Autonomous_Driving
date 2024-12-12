@@ -15,12 +15,8 @@ def derain_filter(I, opt, iterations=5, verbose=False):
     for i in range(iterations):
         # Low-frequency analysis
         if verbose:
-            print(f"[{i+1}-1] Performing low-frequency analysis...")
+            print(f"[{i+1}-1] Computing low-frequency component...")
         Il = lf_analysis(I_input)
-        # Apply guided filter to low-frequency component
-        if verbose:
-            print(f"[{i+1}-2] Applying guided filter to low-frequency component...")
-        Il = guided_filter(Il, Il, radius=8, eps=0.01)
         # High-frequency component
         if verbose:
             print(f"[{i+1}-3] Computing high-frequency component...")
@@ -28,11 +24,11 @@ def derain_filter(I, opt, iterations=5, verbose=False):
         # High-frequency analysis
         if verbose:
             print(f"[{i+1}-4] Performing high-frequency analysis...")
-        Ih_final = hf_analysis(Il, Ih, I, opt)
+        I_final = hf_analysis(Il, Ih, I, opt)
         # Update input for next iteration
         if verbose:
             print(f"[{i+1}-5] Updating input for next iteration...")
-        I_input = Ih_final.astype(np.float32)
+        I_input = I_final.astype(np.float32)
 
     return I_final
 

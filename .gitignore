@@ -1,2 +1,5 @@
 output/
 __pycache__
+results/DID-MDN*
+data/DID-MDN*
+data/testing_fu

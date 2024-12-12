@@ -1,5 +1,4 @@
 import numpy as np
-from tqdm import tqdm
 
 
 def freq_domain(I):
@@ -19,7 +18,7 @@ def analyze(steps):
 
 def chain(I, ops):
     steps = [I]
-    for op in tqdm(ops):
+    for op in ops:
         I = op(I).astype(np.uint8)
         steps.append(I)
     return steps

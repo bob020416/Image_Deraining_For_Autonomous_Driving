@@ -17,11 +17,12 @@ def main():
     )
     parser.add_argument(
         "--output",
-        default="results/man-driving-rain.jpg",
+        default="results/test.jpg",
         help="Path to save the output image (default: results/output_image.jpg)",
     )
 
     args = parser.parse_args()
+    print(args)
 
     os.makedirs(os.path.dirname(args.output), exist_ok=True)
 
@@ -41,8 +42,10 @@ def main():
     print("Running the pipeline")
     # steps = chain(img_y, sol1())
     # steps = chain(img_y, sol2())
-    steps = chain(img_y, sol3(img_y))
+    # steps = chain(img_y, sol3(img_y))
     # steps = chain(img_y, sol4())
+    steps = chain(img_y, sol5())
+    steps = chain(img_y, sol6())
 
     print(f"Saving intermediate results to output directory")
     ana = analyze(steps)
@@ -58,10 +61,11 @@ def main():
 
     print(f"Saving stage-1 result to output directory")
     final = np.vstack([img, steps[-1]])
-    cv2.imwrite("output/stage-1.jpg", final)
+    cv2.imwrite("output/stage-1.jpg", steps[-1])
 
     print(f"Running stage-2...")
-    final_combine = derain_filter(steps[-1], opt=1, iterations=2)
+    final_combine = derain_filter(steps[-1], opt=0, iterations=2)
+    cv2.imwrite("output/stage-2.jpg", final_combine)
     cv2.imwrite(args.output, final_combine)
 
 

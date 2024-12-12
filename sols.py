@@ -37,6 +37,20 @@ def sol4():
     ]
 
 
+def sol5():
+    return [
+        lambda I: slope_filter(I, a=-5, kernel_size=11),
+        lambda I: median_filter(I, ksize=3),
+        lambda I: laplacian_filter(I) + I,
+    ]
+
+
+def sol6():
+    return [
+        # lambda I: mean_filter(I, ksize=5),
+    ]
+
+
 def find_slope(I):
     I_freq = freq_domain(I) / 255
 

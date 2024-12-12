@@ -1,9 +1,8 @@
 import cv2
 import numpy as np
-from tqdm import trange, tqdm
 
 
-def derain_filter(I, opt, iterations=1):
+def derain_filter(I, opt, iterations=5, verbose=False):
     """
     Main function to perform image deraining with iterative refinement.
 
@@ -13,21 +12,26 @@ def derain_filter(I, opt, iterations=1):
     - iterations: Number of iterations for refinement.
     """
     I_input = I.copy().astype(np.float32)
-    for i in trange(iterations):
+    for i in range(iterations):
         # Low-frequency analysis
-        tqdm.write(f"[{i+1}-1] Performing low-frequency analysis...")
+        if verbose:
+            print(f"[{i+1}-1] Performing low-frequency analysis...")
         Il = lf_analysis(I_input)
         # Apply guided filter to low-frequency component
-        tqdm.write(f"[{i+1}-2] Applying guided filter to low-frequency component...")
+        if verbose:
+            print(f"[{i+1}-2] Applying guided filter to low-frequency component...")
         Il = guided_filter(Il, Il, radius=8, eps=0.01)
         # High-frequency component
-        tqdm.write(f"[{i+1}-3] Computing high-frequency component...")
+        if verbose:
+            print(f"[{i+1}-3] Computing high-frequency component...")
         Ih = I_input - Il.astype(np.float32)
         # High-frequency analysis
-        tqdm.write(f"[{i+1}-4] Performing high-frequency analysis...")
+        if verbose:
+            print(f"[{i+1}-4] Performing high-frequency analysis...")
         Ih_final = hf_analysis(Il, Ih, I, opt)
         # Update input for next iteration
-        tqdm.write(f"[{i+1}-5] Updating input for next iteration...")
+        if verbose:
+            print(f"[{i+1}-5] Updating input for next iteration...")
         I_input = Ih_final.astype(np.float32)
 
     return Ih_final
@@ -55,7 +59,7 @@ def lf_analysis(I):
     return Il
 
 
-def hf_analysis(Il, Ih, I, opt):
+def hf_analysis(Il, Ih, I, opt, verbose=False):
     """
     High-frequency analysis: Enhances edges and reconstructs the final image.
 
@@ -73,17 +77,20 @@ def hf_analysis(Il, Ih, I, opt):
     laplacian_kernel = np.array([[1, 1, 1], [1, -8, 1], [1, 1, 1]], dtype=np.float32)
     Il_edge += 0.1 * cv2.filter2D(Il_edge, -1, laplacian_kernel)
     Il_edge = np.clip(Il_edge, 0, 255).astype(np.uint8)
-    cv2.imwrite("output/edge_enhanced.jpg", Il_edge)
+    if verbose:
+        cv2.imwrite("output/edge_enhanced.jpg", Il_edge)
 
     # Guided filtering
     Ih_new = guided_filter(Il_edge, Ih.astype(np.uint8), radius=8, eps=0.01)
     Ir = Ih_new.astype(np.float32) + Il.astype(np.float32)
     Ir = np.clip(Ir, 0, 255).astype(np.uint8)
-    cv2.imwrite("output/recovered.jpg", Ir)
+    if verbose:
+        cv2.imwrite("output/recovered.jpg", Ir)
 
     # Layer 2 operation
     Icr = np.minimum(Ir, I.astype(np.uint8))
-    cv2.imwrite("output/clear_recovered.jpg", Icr)
+    if verbose:
+        cv2.imwrite("output/clear_recovered.jpg", Icr)
 
     # Layer 3 operation
     b = 0.9 if opt == 0 else 0.5

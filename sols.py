@@ -51,6 +51,14 @@ def sol6():
     ]
 
 
+def sol7(I):
+    # a, _ = find_slope(I)
+    return [
+        lambda I: sector_gauss_filter(I, a=5, threshold=3, mul=0, lratio=0, uratio=0.5),
+        lambda I: median_filter(I, ksize=3),
+    ]
+
+
 def find_slope(I):
     I_freq = freq_domain(I) / 255
 

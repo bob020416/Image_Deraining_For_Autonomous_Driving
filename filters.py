@@ -1,8 +1,6 @@
 import numpy as np
 import cv2
 
-# from jax import numpy as np
-
 
 def notch_filter(I, threshold, mul=0.7):
     I_fft = np.fft.fft2(I)
@@ -102,8 +100,12 @@ def line_filter(I, a, threshold, mul=0.7):
 
 def sector_region(rows, cols, a, threshold, lratio=0.2, uratio=0.8):
     crow, ccol = rows // 2, cols // 2
-    rub, cub = int(rows // 2 * uratio), int(cols // 2 * uratio)
-    rlb, clb = int(rows // 2 * lratio), int(cols // 2 * lratio)
+    # rub, cub = int(rows // 2 * uratio), int(cols // 2 * uratio)
+    # rlb, clb = int(rows // 2 * lratio), int(cols // 2 * lratio)
+    rub = np.array(rows // 2 * uratio, dtype=int)
+    cub = np.array(cols // 2 * uratio, dtype=int)
+    rlb = np.array(rows // 2 * lratio, dtype=int)
+    clb = np.array(cols // 2 * lratio, dtype=int)
     mask = np.zeros((rows, cols), np.float32)
     for i in range(crow - rub, crow + rub):
         y = crow - i
@@ -117,10 +119,8 @@ def sector_region(rows, cols, a, threshold, lratio=0.2, uratio=0.8):
     return mask
 
 
-def sector_gauss(rows, cols, a, threshold, lratio=0.2, uratio=0.8):
+def sector_gauss(rows, cols, a, threshold):
     crow, ccol = rows // 2, cols // 2
-    rub, cub = int(rows // 2 * uratio), int(cols // 2 * uratio)
-    rlb, clb = int(rows // 2 * lratio), int(cols // 2 * lratio)
     mask = np.zeros((rows, cols), np.float32)
     for i in range(rows):
         for j in range(ccol, cols):
@@ -145,10 +145,24 @@ def sector_filter(I, a, threshold, mul=0.7, lratio=0.2, uratio=0.8):
     I_fft = np.fft.fftshift(I_fft)
     rows, cols = I.shape
     mask = 1 - sector_region(rows, cols, a, threshold, lratio, uratio) * (1 - mul)
-    # mask = 1 - sector_gauss(rows, cols, a, threshold, lratio, uratio)
     viz_mask = np.uint8(mask * 255)
     # cv2.imwrite("output/sector_mask.jpg", viz_mask)
+    I_fft = I_fft * mask
+    I_fft = np.fft.ifftshift(I_fft)
+    I = np.fft.ifft2(I_fft)
+    I = np.abs(I)
+    I = np.uint8(I)
+    return I
 
+
+def sector_gauss_filter(I, a, threshold, mul=0.7, lratio=0.2, uratio=0.8):
+    I_fft = np.fft.fft2(I)
+    I_fft = np.fft.fftshift(I_fft)
+    rows, cols = I.shape
+    rows = np.array(rows)
+    mask = 1 - sector_gauss(rows, cols, a, threshold)
+    viz_mask = np.uint8(mask * 255)
+    # cv2.imwrite("output/sector_mask.jpg", viz_mask)
     I_fft = I_fft * mask
     I_fft = np.fft.ifftshift(I_fft)
     I = np.fft.ifft2(I_fft)

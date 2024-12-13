@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from jax import jit
 
 
 def derain_filter(I, opt, iterations=5, verbose=False):

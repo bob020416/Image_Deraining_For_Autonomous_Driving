@@ -11,10 +11,16 @@ from derain_filter import derain_filter
 
 from multiprocessing import Pool
 
+# lock
+from multiprocessing import Lock
+
+
+bar = tqdm(total=12000)
+
 
 def run(input_path, output_path):
     # read image
-    # tqdm.write(f"Reading image from {input_path}")
+    # print(f"Reading image from {input_path}")
     img = cv2.imread(input_path, cv2.IMREAD_COLOR)
     h, w = img.shape[:2]
     img = img[:, : w // 2]
@@ -31,10 +37,10 @@ def run(input_path, output_path):
     # print("Running the pipeline")
     # steps = chain(img_y, sol1())
     # steps = chain(img_y, sol2())
-    # steps = chain(img_y, sol3(img_y))
+    steps = chain(img_y, sol3(img_y))
     # steps = chain(img_y, sol4())
-    steps = chain(img_y, sol5())
-    steps = chain(img_y, sol6())
+    # steps = chain(img_y, sol5())
+    # steps = chain(img_y, sol6())
 
     # print(f"Saving intermediate results to output directory")
     ana = analyze(steps)
@@ -59,10 +65,15 @@ def run(input_path, output_path):
     # cv2.imwrite("output/stage-2.jpg", final_combine)
     final_combine = numpy.uint8(final_combine)
     cv2.imwrite(output_path, final_combine)
-    print(f"Saved output to {output_path}")
+    tqdm.write(f"Saved output to {output_path}")
+    # l.acquire()
+    bar.update(1)
+    # l.release()
 
 
 def main():
+    lock = Lock()
+
     # python .\combine.py --input data/man-driving-rain.jpg --output results/output_image.jpg
     parser = argparse.ArgumentParser(description="Process some images.")
     parser.add_argument(
@@ -70,11 +81,19 @@ def main():
         default="data/DID-MDN-training/",
         help="Path to the input image (default: data/default_image.jpg)",
     )
+    parser.add_argument(
+        "-p",
+        "--processes",
+        default=4,
+        type=int,
+        help="Number of processes to use",
+    )
 
     args = parser.parse_args()
     print(args)
 
-    with Pool(4) as p:
+    cnt = 0
+    with Pool(args.processes) as p:
         for dir_path, dir_name, file_names in os.walk(args.input):
             # print(f"Processing images in {dir_path}")
             output_dir = dir_path.replace("data", "results")
@@ -87,6 +106,10 @@ def main():
                     continue
                 # print(f"Processing {file_path}")
                 p.apply_async(run, args=(file_path, output_file))
+                # run(file_path, output_file)
+                cnt += 1
+                # if cnt > 100:
+                #     break
         print("Waiting for all processes to finish")
         p.close()
         p.join()

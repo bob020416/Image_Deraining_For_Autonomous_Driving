@@ -13,12 +13,12 @@ def main():
     parser.add_argument(
         "--input",
         default="data/man-driving-rain.jpg",
-        help="Path to the input image (default: data/default_image.jpg)",
+        help="Path to the input image (default: data/man-driving-rain.jpg)",
     )
     parser.add_argument(
         "--output",
-        default="results/test.jpg",
-        help="Path to save the output image (default: results/output_image.jpg)",
+        default="results/man-driving-rain.jpg",
+        help="Path to save the output image (default: results/man-driving-rain.jpg)",
     )
 
     args = parser.parse_args()
@@ -42,10 +42,10 @@ def main():
     print("Running the pipeline")
     # steps = chain(img_y, sol1())
     # steps = chain(img_y, sol2())
-    # steps = chain(img_y, sol3(img_y))
+    steps = chain(img_y, sol3(img_y))
     # steps = chain(img_y, sol4())
-    steps = chain(img_y, sol5())
-    steps = chain(img_y, sol6())
+    # steps = chain(img_y, sol5())
+    # steps = chain(img_y, sol6())
 
     print(f"Saving intermediate results to output directory")
     ana = analyze(steps)
